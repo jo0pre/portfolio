@@ -387,6 +387,7 @@
       color: var(--text-muted);
       border-bottom: 1px solid var(--border-glass);
       position: relative;
+      overflow: hidden;
     }
 
     .media-placeholder i {
@@ -395,6 +396,13 @@
       background: var(--web3-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+
+    .media-placeholder iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
     }
 
     .showcase-info {
@@ -439,7 +447,7 @@
 
     .modal-container {
       width: 100%;
-      max-width: 700px;
+      max-width: 750px;
       padding: 2.5rem;
       position: relative;
       transform: scale(0.9);
@@ -465,6 +473,7 @@
       justify-content: center;
       cursor: pointer;
       transition: all 0.2s ease;
+      z-index: 10;
     }
 
     .modal-close:hover {
@@ -480,7 +489,7 @@
 
     .modal-preview-box {
       width: 100%;
-      height: 280px;
+      height: 380px;
       background: rgba(10, 10, 15, 0.9);
       border: 1px solid var(--border-glass);
       border-radius: 12px;
@@ -489,14 +498,15 @@
       align-items: center;
       justify-content: center;
       color: var(--text-muted);
+      overflow: hidden;
+      position: relative;
     }
 
-    .modal-preview-box i {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-      background: var(--web3-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .modal-preview-box iframe, .modal-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border: none;
     }
 
     /* ==========================================================================
@@ -681,6 +691,7 @@
       .timeline-node { left: 1px; width: 16px; height: 16px; }
       .timeline-content { padding: 1.25rem; }
       .contact-form { padding: 1.5rem; }
+      .modal-preview-box { height: 260px; }
     }
   </style>
 </head>
@@ -832,20 +843,19 @@
   <section id="showcase">
     <div class="container">
       <h2 class="section-title">Portfolio <span>Showcase</span></h2>
-      <div class="section-subtitle">Categorized showcase containing 6 items per category. Click any card to trigger a full preview modal.</div>
+      <div class="section-subtitle">Categorized showcase containing logos, banners, YouTube videos, and Google Drive video shorts. Click any card to trigger full playback or preview modal.</div>
 
       <!-- FILTER TABS -->
       <div class="filter-tabs">
         <button class="tab-btn active" onclick="filterShowcase('all', event)">All Assets</button>
-        <button class="tab-btn" onclick="filterShowcase('web', event)">Web Designs</button>
-        <button class="tab-btn" onclick="filterShowcase('logo', event)">Logo & Branding</button>
-        <button class="tab-btn" onclick="filterShowcase('banner', event)">Banner & Collateral</button>
-        <button class="tab-btn" onclick="filterShowcase('video', event)">Video & Motion</button>
+        <button class="tab-btn" onclick="filterShowcase('logo', event)">Logo Design (4)</button>
+        <button class="tab-btn" onclick="filterShowcase('banner', event)">Banners (4)</button>
+        <button class="tab-btn" onclick="filterShowcase('video', event)">Videos & Motion (8)</button>
       </div>
 
       <!-- SHOWCASE GRID -->
       <div class="showcase-grid" id="portfolio-grid">
-        <!-- Javascript populates cards here -->
+        <!-- Javascript dynamic rendering -->
       </div>
     </div>
   </section>
@@ -855,16 +865,17 @@
     <div class="modal-container glass-card">
       <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
       <div class="modal-body">
-        <div class="modal-preview-box" id="modal-preview">
-          <i class="fa-solid fa-image" id="modal-icon"></i>
-          <span id="modal-preview-label">[ High-Res Preview ]</span>
+        <div class="modal-preview-box" id="modal-preview-container">
+          <!-- Dynamic preview injected here -->
         </div>
         <div>
           <h3 id="modal-title" style="font-size: 1.5rem; margin-bottom: 0.5rem;">Asset Title</h3>
           <p id="modal-desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
             Detailed description of the visual asset or project design.
           </p>
-          <button class="btn btn-web3" onclick="closeModal()"><i class="fa-solid fa-check"></i> Close Preview</button>
+          <div id="modal-action-btn">
+            <button class="btn btn-web3" onclick="closeModal()"><i class="fa-solid fa-check"></i> Close Preview</button>
+          </div>
         </div>
       </div>
     </div>
@@ -949,7 +960,7 @@
           </div>
         </div>
 
-        <!-- FORMSPREE CAPTCHA SUBMISSION (REPLACE YOUR_FORMSPREE_ENDPOINT IN YOUR LOCAL DEPLOYMENT) -->
+        <!-- FORMSPREE CAPTCHA SUBMISSION -->
         <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
         <form class="contact-form glass-card" id="contact-form" action="https://formspree.io/f/maewlkpb" method="POST">
           <div class="form-group">
@@ -965,7 +976,6 @@
             <textarea id="message" name="message" rows="4" placeholder="Detail your project or query..." required></textarea>
           </div>
           
-          <!-- HCAPTCHA WIDGET (REPLACE YOUR_HCAPTCHA_SITEKEY IN YOUR LOCAL DEPLOYMENT) -->
           <div class="h-captcha" data-sitekey="0ceae7e4-ca9c-4310-87b6-8f90cb4a43e2"></div>
           <input type="hidden" name="_next" value="https://jo0pre.github.io/portfolio/" />
           <button type="submit" class="btn btn-web3"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
@@ -983,7 +993,7 @@
 
   <!-- JAVASCRIPT -->
   <script>
-    // Obfuscated Email Loader (Protects against email web scrapers)
+    // Obfuscated Email Loader
     document.addEventListener("DOMContentLoaded", function() {
       const u = "joopre";
       const d = "gmail.com";
@@ -1015,37 +1025,81 @@
       burgerIcon.classList.add('fa-bars');
     }
 
-    // 2. Portfolio Items Generator (6 PER CATEGORY)
-    const categories = [
-      { id: 'web', name: 'Web Design', count: 6, icon: 'fa-laptop-code' },
-      { id: 'logo', name: 'Logo Design', count: 6, icon: 'fa-vector-square' },
-      { id: 'banner', name: 'Banner', count: 6, icon: 'fa-image' },
-      { id: 'video', name: 'Video Asset', count: 6, icon: 'fa-film' }
+    // 2. PORTFOLIO DATA SET
+    const portfolioItems = [
+      // 4 LOGO DESIGNS (620x280)
+      { id: 1, category: 'logo', title: 'Vector Branding Logo 1', desc: 'Vector logo design asset rendered at 620x280px ratio.', type: 'image', icon: 'fa-vector-square' },
+      { id: 2, category: 'logo', title: 'Corporate Identity Logo 2', desc: 'Minimalist brand mark optimized at 620x280px resolution.', type: 'image', icon: 'fa-vector-square' },
+      { id: 3, category: 'logo', title: 'Tech Emblem Logo 3', desc: 'Dynamic digital badge design rendered at 620x280px ratio.', type: 'image', icon: 'fa-vector-square' },
+      { id: 4, category: 'logo', title: 'Web3 Crest Logo 4', desc: 'Modern geometric mark configured at 620x280px resolution.', type: 'image', icon: 'fa-vector-square' },
+
+      // 4 BANNER DESIGNS (620x280)
+      { id: 5, category: 'banner', title: 'AdWords Marketing Banner 1', desc: 'High-converting display ad banner optimized at 620x280px.', type: 'image', icon: 'fa-image' },
+      { id: 6, category: 'banner', title: 'Social Campaign Banner 2', desc: 'Digital collateral graphic asset rendered at 620x280px.', type: 'image', icon: 'fa-image' },
+      { id: 7, category: 'banner', title: 'Promo Showcase Banner 3', desc: 'Web header visual design rendered at 620x280px ratio.', type: 'image', icon: 'fa-image' },
+      { id: 8, category: 'banner', title: 'Brand Launch Banner 4', desc: 'Corporate announcement banner asset rendered at 620x280px.', type: 'image', icon: 'fa-image' },
+
+      // 2 YOUTUBE EMBEDS
+      { id: 9, category: 'video', title: 'The £26 Million Brink\'s-Mat Robbery Explained', desc: 'YouTube documentary video production asset.', type: 'youtube', videoId: 'XhbDt3oPy78', targetUrl: 'https://www.youtube.com/watch?v=XhbDt3oPy78' },
+      { id: 10, category: 'video', title: 'Why Are Some People Left-Handed? The Hidden Story of Human Evolution', desc: 'YouTube educational documentary video asset.', type: 'youtube', videoId: 'dHgRh_g5pgU', targetUrl: 'https://www.youtube.com/watch?v=dHgRh_g5pgU' },
+
+      // 6 GOOGLE DRIVE SHORT VIDEOS
+      { id: 11, category: 'video', title: 'Motion Graphic Short #1', desc: 'Short-form promotional video edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1ASXfnhvXRjcUwcp2l9qPCvEHahj-JSdQ/preview' },
+      { id: 12, category: 'video', title: 'Motion Graphic Short #2', desc: 'Dynamic social video teaser edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1Ampz4vZR0dWC1k9P13SBaAzXH7njM0Xe/preview' },
+      { id: 13, category: 'video', title: 'Motion Graphic Short #3', desc: 'Short-form animation sequence edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1mJkkANRUyjfjKDsdZIXa3_hgU0EB9Ze9/preview' },
+      { id: 14, category: 'video', title: 'Motion Graphic Short #4', desc: 'Visual effects video edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1rMu4w_jZkGWcE8xpFnwQEbuqr-AGLbll/preview' },
+      { id: 15, category: 'video', title: 'Motion Graphic Short #5', desc: 'Vertical video reel showcase edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1vvS9u-64_QVbK7X-86nS_uV0hgzVTkPp/preview' },
+      { id: 16, category: 'video', title: 'Motion Graphic Short #6', desc: 'Short-form promotional edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1Q_wGeip-uCf9Z-XlkMHSpEbgtyHIl3qo/preview' }
     ];
 
     const gridContainer = document.getElementById('portfolio-grid');
 
-    categories.forEach(cat => {
-      for (let i = 1; i <= cat.count; i++) {
+    // Render Cards Function
+    function renderPortfolio() {
+      gridContainer.innerHTML = '';
+      portfolioItems.forEach((item, index) => {
         const card = document.createElement('div');
-        card.className = `showcase-card glass-card category-${cat.id}`;
-        card.setAttribute('data-category', cat.id);
-        card.setAttribute('onclick', `openModal('${cat.name} ${i}', '${cat.icon}', '${cat.name.toLowerCase()}')`);
+        card.className = `showcase-card glass-card category-${item.category}`;
+        card.setAttribute('data-category', item.category);
+        card.setAttribute('onclick', `openModal(${index})`);
+
+        let mediaHTML = '';
+        if (item.type === 'image') {
+          mediaHTML = `
+            <div class="media-placeholder" style="aspect-ratio: 620/280; height: auto;">
+              <i class="fa-solid ${item.icon}"></i>
+              <span>[ 620 x 280 Asset ]</span>
+            </div>
+          `;
+        } else if (item.type === 'youtube') {
+          mediaHTML = `
+            <div class="media-placeholder" style="background-image: url('https://img.youtube.com/vi/${item.videoId}/hqdefault.jpg'); background-size: cover; background-position: center;">
+              <div style="background: rgba(0,0,0,0.5); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-brands fa-youtube" style="font-size: 3rem; color: #ef4444;"></i>
+              </div>
+            </div>
+          `;
+        } else if (item.type === 'gdrive') {
+          mediaHTML = `
+            <div class="media-placeholder">
+              <iframe src="${item.embedUrl}" allow="autoplay"></iframe>
+            </div>
+          `;
+        }
 
         card.innerHTML = `
-          <div class="media-placeholder">
-            <i class="fa-solid ${cat.icon}"></i>
-            <span>[ ${cat.name} ${i} ]</span>
-          </div>
+          ${mediaHTML}
           <div class="showcase-info">
-            <h3>${cat.name} ${i}</h3>
-            <p>Click to trigger pop-up preview modal.</p>
+            <h3>${item.title}</h3>
+            <p>${item.desc}</p>
           </div>
         `;
 
         gridContainer.appendChild(card);
-      }
-    });
+      });
+    }
+
+    renderPortfolio();
 
     // 3. Tab Filtering Handler
     function filterShowcase(category, evt) {
@@ -1069,22 +1123,52 @@
 
     // 4. Pop-up Modal Handler
     const modalOverlay = document.getElementById('item-modal');
+    const modalContainer = document.getElementById('modal-preview-container');
     const modalTitle = document.getElementById('modal-title');
-    const modalIcon = document.getElementById('modal-icon');
-    const modalLabel = document.getElementById('modal-preview-label');
     const modalDesc = document.getElementById('modal-desc');
+    const modalActionBtn = document.getElementById('modal-action-btn');
 
-    function openModal(title, iconClass, type) {
-      modalTitle.innerText = title;
-      modalIcon.className = `fa-solid ${iconClass}`;
-      modalLabel.innerText = `[ Full High-Res Preview: ${title} ]`;
-      modalDesc.innerText = `This is the pop-up lightbox preview for ${title}. Replace this placeholder frame with an actual image, live frame, or video embed.`;
+    function openModal(index) {
+      const item = portfolioItems[index];
+      modalTitle.innerText = item.title;
+      modalDesc.innerText = item.desc;
+
+      if (item.type === 'image') {
+        modalContainer.innerHTML = `
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--text-muted);">
+            <i class="fa-solid ${item.icon}" style="font-size: 3.5rem; margin-bottom: 1rem; background: var(--web3-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            <span>[ High-Res 620x280 Preview Placeholder ]</span>
+          </div>
+        `;
+        modalActionBtn.innerHTML = `<button class="btn btn-web3" onclick="closeModal()"><i class="fa-solid fa-check"></i> Close Preview</button>`;
+      } else if (item.type === 'youtube') {
+        modalContainer.innerHTML = `
+          <div style="background-image: url('https://img.youtube.com/vi/${item.videoId}/maxresdefault.jpg'); background-size: cover; background-position: center; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative;">
+            <div style="background: rgba(5,5,8,0.75); width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; padding:1.5rem; text-align:center;">
+              <i class="fa-brands fa-youtube" style="font-size: 4.5rem; color: #ef4444; filter: drop-shadow(0 0 15px rgba(239,68,68,0.6));"></i>
+              <a href="${item.targetUrl}" target="_blank" class="btn btn-web3" style="font-size:1.1rem; padding: 0.9rem 2.2rem;"><i class="fa-solid fa-play"></i> Watch Video on YouTube</a>
+            </div>
+          </div>
+        `;
+        modalActionBtn.innerHTML = `
+          <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <a href="${item.targetUrl}" target="_blank" class="btn btn-web3"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open in YouTube</a>
+            <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+          </div>
+        `;
+      } else if (item.type === 'gdrive') {
+        modalContainer.innerHTML = `
+          <iframe src="${item.embedUrl}" allow="autoplay" allowfullscreen></iframe>
+        `;
+        modalActionBtn.innerHTML = `<button class="btn btn-web3" onclick="closeModal()"><i class="fa-solid fa-check"></i> Close Preview</button>`;
+      }
       
       modalOverlay.classList.add('active');
     }
 
     function closeModal() {
       modalOverlay.classList.remove('active');
+      modalContainer.innerHTML = '';
     }
 
     modalOverlay.addEventListener('click', (e) => {
