@@ -390,12 +390,10 @@
       overflow: hidden;
     }
 
-    .media-placeholder i {
-      font-size: 2.2rem;
-      margin-bottom: 0.5rem;
-      background: var(--web3-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .media-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .media-placeholder iframe {
@@ -843,11 +841,12 @@
   <section id="showcase">
     <div class="container">
       <h2 class="section-title">Portfolio <span>Showcase</span></h2>
-      <div class="section-subtitle">Categorized showcase containing logos, banners, YouTube videos, and Google Drive video shorts. Click any card to trigger full playback or preview modal.</div>
+      <div class="section-subtitle">Categorized showcase containing logos, banners, web design work, YouTube videos, and Google Drive shorts. Click any card to preview.</div>
 
       <!-- FILTER TABS -->
       <div class="filter-tabs">
         <button class="tab-btn active" onclick="filterShowcase('all', event)">All Assets</button>
+        <button class="tab-btn" onclick="filterShowcase('webdesign', event)">Web Design (4)</button>
         <button class="tab-btn" onclick="filterShowcase('logo', event)">Logo Design (4)</button>
         <button class="tab-btn" onclick="filterShowcase('banner', event)">Banners (4)</button>
         <button class="tab-btn" onclick="filterShowcase('video', event)">Videos & Motion (8)</button>
@@ -1025,31 +1024,37 @@
       burgerIcon.classList.add('fa-bars');
     }
 
-    // 2. PORTFOLIO DATA SET
+    // 2. PORTFOLIO DATA SET (UPDATED WITH YOUR FILENAMES AND WEB DESIGN WEBSITES)
     const portfolioItems = [
-      // 4 LOGO DESIGNS (620x280)
-      { id: 1, category: 'logo', title: 'Vector Branding Logo 1', desc: 'Vector logo design asset rendered at 620x280px ratio.', type: 'image', icon: 'fa-vector-square' },
-      { id: 2, category: 'logo', title: 'Corporate Identity Logo 2', desc: 'Minimalist brand mark optimized at 620x280px resolution.', type: 'image', icon: 'fa-vector-square' },
-      { id: 3, category: 'logo', title: 'Tech Emblem Logo 3', desc: 'Dynamic digital badge design rendered at 620x280px ratio.', type: 'image', icon: 'fa-vector-square' },
-      { id: 4, category: 'logo', title: 'Web3 Crest Logo 4', desc: 'Modern geometric mark configured at 620x280px resolution.', type: 'image', icon: 'fa-vector-square' },
+      // WEB DESIGN WORK (4)
+      { id: 1, category: 'webdesign', title: 'Nasuno Telemarketing Services', desc: 'Custom website design for telemarketing operations.', type: 'image', fileName: 'NasunoTelemarketingService.png' },
+      { id: 2, category: 'webdesign', title: 'Alta Senior Care Services', desc: 'Healthcare and senior living service website design.', type: 'image', fileName: 'AltaSeniorCareServices.png', targetUrl: 'https://web.archive.org/web/20230808210306/https://www.altaseniorcareservices.com/' },
+      { id: 3, category: 'webdesign', title: 'Carpenter Training Partners', desc: 'Educational portal and partnership website development.', type: 'image', fileName: 'CarpentersTrainingPartners.png', targetUrl: 'https://ct-partners.org' },
+      { id: 4, category: 'webdesign', title: 'XTS BPO', desc: 'Outsourcing and business process management platform.', type: 'image', fileName: 'XTS_BPO.png', targetUrl: 'https://web.archive.org/web/20240414153907/https://xtsbpo.com/' },
 
-      // 4 BANNER DESIGNS (620x280)
-      { id: 5, category: 'banner', title: 'AdWords Marketing Banner 1', desc: 'High-converting display ad banner optimized at 620x280px.', type: 'image', icon: 'fa-image' },
-      { id: 6, category: 'banner', title: 'Social Campaign Banner 2', desc: 'Digital collateral graphic asset rendered at 620x280px.', type: 'image', icon: 'fa-image' },
-      { id: 7, category: 'banner', title: 'Promo Showcase Banner 3', desc: 'Web header visual design rendered at 620x280px ratio.', type: 'image', icon: 'fa-image' },
-      { id: 8, category: 'banner', title: 'Brand Launch Banner 4', desc: 'Corporate announcement banner asset rendered at 620x280px.', type: 'image', icon: 'fa-image' },
+      // 4 LOGO DESIGNS
+      { id: 5, category: 'logo', title: 'Justine\'s Kitchen', desc: 'Brand identity and vector logo design.', type: 'image', fileName: 'JustinesKitchen.png' },
+      { id: 6, category: 'logo', title: 'Kimbala Country Escape', desc: 'Hospitality and resort identity mark.', type: 'image', fileName: 'KimbalaCountryEscape.png' },
+      { id: 7, category: 'logo', title: 'Little Lamb Carpentry', desc: 'Custom woodworking brand mark.', type: 'image', fileName: 'LittleLambCarpentry.png' },
+      { id: 8, category: 'logo', title: 'StoraBOX', desc: 'Modern storage solution logo mark.', type: 'image', fileName: 'StoraBOX.png' },
 
-      // 2 YOUTUBE EMBEDS
-      { id: 9, category: 'video', title: 'The £26 Million Brink\'s-Mat Robbery Explained', desc: 'YouTube documentary video production asset.', type: 'youtube', videoId: 'XhbDt3oPy78', targetUrl: 'https://www.youtube.com/watch?v=XhbDt3oPy78' },
-      { id: 10, category: 'video', title: 'Why Are Some People Left-Handed? The Hidden Story of Human Evolution', desc: 'YouTube educational documentary video asset.', type: 'youtube', videoId: 'dHgRh_g5pgU', targetUrl: 'https://www.youtube.com/watch?v=dHgRh_g5pgU' },
+      // 4 BANNER DESIGNS
+      { id: 9, category: 'banner', title: 'Banner 01', desc: 'Precision Branding & Complete Visual Identities', type: 'image', fileName: 'Banner01.png' },
+      { id: 10, category: 'banner', title: 'Banner 02', desc: 'Short Form Video & Dynamic Content Creation', type: 'image', fileName: 'Banner02.png' },
+      { id: 11, category: 'banner', title: 'Banner 03', desc: 'Experimental UI/UX Web Development', type: 'image', fileName: 'Banner03.png' },
+      { id: 12, category: 'banner', title: 'Banner 04', desc: 'Website Design and Development', type: 'image', fileName: 'Banner04.png' },
+
+      // 2 YOUTUBE VIDEOS
+      { id: 13, category: 'video', title: 'The £26 Million Brink\'s-Mat Robbery Explained', desc: 'YouTube documentary video production asset.', type: 'youtube', videoId: 'XhbDt3oPy78', targetUrl: 'https://www.youtube.com/watch?v=XhbDt3oPy78' },
+      { id: 14, category: 'video', title: 'Why Are Some People Left-Handed? The Hidden Story of Human Evolution', desc: 'YouTube educational documentary video asset.', type: 'youtube', videoId: 'dHgRh_g5pgU', targetUrl: 'https://www.youtube.com/watch?v=dHgRh_g5pgU' },
 
       // 6 GOOGLE DRIVE SHORT VIDEOS
-      { id: 11, category: 'video', title: 'Motion Graphic Short #1', desc: 'Short-form promotional video edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1ASXfnhvXRjcUwcp2l9qPCvEHahj-JSdQ/preview' },
-      { id: 12, category: 'video', title: 'Motion Graphic Short #2', desc: 'Dynamic social video teaser edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1Ampz4vZR0dWC1k9P13SBaAzXH7njM0Xe/preview' },
-      { id: 13, category: 'video', title: 'Motion Graphic Short #3', desc: 'Short-form animation sequence edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1mJkkANRUyjfjKDsdZIXa3_hgU0EB9Ze9/preview' },
-      { id: 14, category: 'video', title: 'Motion Graphic Short #4', desc: 'Visual effects video edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1rMu4w_jZkGWcE8xpFnwQEbuqr-AGLbll/preview' },
-      { id: 15, category: 'video', title: 'Motion Graphic Short #5', desc: 'Vertical video reel showcase edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1vvS9u-64_QVbK7X-86nS_uV0hgzVTkPp/preview' },
-      { id: 16, category: 'video', title: 'Motion Graphic Short #6', desc: 'Short-form promotional edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1Q_wGeip-uCf9Z-XlkMHSpEbgtyHIl3qo/preview' }
+      { id: 15, category: 'video', title: 'Motion Graphic Short #1', desc: 'Short-form promotional video edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1ASXfnhvXRjcUwcp2l9qPCvEHahj-JSdQ/preview' },
+      { id: 16, category: 'video', title: 'Motion Graphic Short #2', desc: 'Dynamic social video teaser edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1Ampz4vZR0dWC1k9P13SBaAzXH7njM0Xe/preview' },
+      { id: 17, category: 'video', title: 'Motion Graphic Short #3', desc: 'Short-form animation sequence edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1mJkkANRUyjfjKDsdZIXa3_hgU0EB9Ze9/preview' },
+      { id: 18, category: 'video', title: 'Motion Graphic Short #4', desc: 'Visual effects video edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1rMu4w_jZkGWcE8xpFnwQEbuqr-AGLbll/preview' },
+      { id: 19, category: 'video', title: 'Motion Graphic Short #5', desc: 'Vertical video reel showcase edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1vvS9u-64_QVbK7X-86nS_uV0hgzVTkPp/preview' },
+      { id: 20, category: 'video', title: 'Motion Graphic Short #6', desc: 'Short-form promotional edit hosted on Google Drive.', type: 'gdrive', embedUrl: 'https://drive.google.com/file/d/1Q_wGeip-uCf9Z-XlkMHSpEbgtyHIl3qo/preview' }
     ];
 
     const gridContainer = document.getElementById('portfolio-grid');
@@ -1066,9 +1071,12 @@
         let mediaHTML = '';
         if (item.type === 'image') {
           mediaHTML = `
-            <div class="media-placeholder" style="aspect-ratio: 620/280; height: auto;">
-              <i class="fa-solid ${item.icon}"></i>
-              <span>[ 620 x 280 Asset ]</span>
+            <div class="media-placeholder">
+              <img src="${item.fileName}" alt="${item.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+              <div style="display:none; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--text-muted);">
+                <i class="fa-solid fa-image" style="font-size:2rem; margin-bottom:0.5rem; background:var(--web3-gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent;"></i>
+                <span style="font-size:0.8rem;">[ Upload ${item.fileName} ]</span>
+              </div>
             </div>
           `;
         } else if (item.type === 'youtube') {
@@ -1135,12 +1143,19 @@
 
       if (item.type === 'image') {
         modalContainer.innerHTML = `
-          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; color:var(--text-muted);">
-            <i class="fa-solid ${item.icon}" style="font-size: 3.5rem; margin-bottom: 1rem; background: var(--web3-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
-            <span>[ High-Res 620x280 Preview Placeholder ]</span>
-          </div>
+          <img src="${item.fileName}" alt="${item.title}" style="width:100%; height:100%; object-fit:contain;" onerror="this.outerHTML='<div style=\\'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--text-muted);\\'><i class=\\'fa-solid fa-image\\' style=\\'font-size:3.5rem;margin-bottom:1rem;background:var(--web3-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;\\'></i><span>Upload <b>${item.fileName}</b> to your root web folder</span></div>';" />
         `;
-        modalActionBtn.innerHTML = `<button class="btn btn-web3" onclick="closeModal()"><i class="fa-solid fa-check"></i> Close Preview</button>`;
+        
+        if (item.targetUrl) {
+          modalActionBtn.innerHTML = `
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+              <a href="${item.targetUrl}" target="_blank" class="btn btn-web3"><i class="fa-solid fa-arrow-up-right-from-square"></i> Visit Website</a>
+              <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+            </div>
+          `;
+        } else {
+          modalActionBtn.innerHTML = `<button class="btn btn-web3" onclick="closeModal()"><i class="fa-solid fa-check"></i> Close Preview</button>`;
+        }
       } else if (item.type === 'youtube') {
         modalContainer.innerHTML = `
           <div style="background-image: url('https://img.youtube.com/vi/${item.videoId}/maxresdefault.jpg'); background-size: cover; background-position: center; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative;">
