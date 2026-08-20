@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Geoffrey Buenaflor | Senior Webmaster & Graphic Designer</title>
   
-  <!-- Fonts & FontAwesome -->
+
+  <!-- Single Optimized Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Non-blocking Font Loading -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 
   <style>
     /* ==========================================================================
@@ -960,7 +963,7 @@
         </div>
 
         <!-- FORMSPREE CAPTCHA SUBMISSION -->
-        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
         <form class="contact-form glass-card" id="contact-form" action="https://formspree.io/f/maewlkpb" method="POST">
           <div class="form-group">
             <label for="name">Your Name</label>
@@ -1089,8 +1092,9 @@
           `;
         } else if (item.type === 'gdrive') {
           mediaHTML = `
-            <div class="media-placeholder">
-              <iframe src="${item.embedUrl}" allow="autoplay"></iframe>
+            <div class="media-placeholder" style="background: rgba(15,15,22,0.9); display:flex; flex-direction:column; align-items:center; justify-content:center;">
+              <i class="fa-solid fa-clapperboard" style="font-size:2.5rem; color:var(--accent-orange); margin-bottom:0.5rem;"></i>
+              <span style="font-size:0.8rem; color:var(--text-muted);">[ Play Short Video ]</span>
             </div>
           `;
         }
@@ -1190,5 +1194,6 @@
       if (e.target === modalOverlay) closeModal();
     });
   </script>
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
 </body>
 </html>
