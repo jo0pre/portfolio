@@ -962,30 +962,53 @@
           </p>
           <div style="color: var(--text-muted);">
             <p><i class="fa-solid fa-location-dot" style="color: var(--accent-primary); margin-right: 0.5rem;"></i> Lapu-lapu City, Cebu, Philippines</p>
-            <p style="margin-top: 0.5rem;"><i class="fa-solid fa-paper-plane" style="color: var(--accent-secondary); margin-right: 0.5rem;"></i> <span>Use the contact form to send a direct message.</span></p>
+            <p style="margin-top: 0.5rem;">
+  <i class="fa-solid fa-paper-plane" style="color: var(--accent-secondary); margin-right: 0.5rem;"></i> 
+  <span>Use the contact form to send a direct message.</span>
+</p>
           </div>
         </div>
 
         <!-- FORMSPREE CAPTCHA SUBMISSION -->
-        <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
-        <form class="contact-form ui-card" id="contact-form" action="https://formspree.io/f/maewlkpb" method="POST">
-          <div class="form-group">
-            <label for="name">Your Name</label>
-            <input type="text" id="name" name="name" placeholder="John Doe" required />
-          </div>
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="_replyto" placeholder="john@example.com" required />
-          </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="4" placeholder="Detail your project or query..." required></textarea>
-          </div>
-          
-          <div class="h-captcha" data-sitekey="0ceae7e4-ca9c-4310-87b6-8f90cb4a43e2"></div>
-          <input type="hidden" name="_next" value="https://jo0pre.github.io/portfolio/" />
-          <button type="submit" class="btn btn-brand"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
-        </form>
+ <!-- FORMSPREE AJAX SCRIPT (Place in head or right above form) -->
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'maewlkpb' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+<!-- SUCCESS & ERROR FEEDBACK NOTIFICATIONS -->
+<div data-fs-success style="display: none; padding: 1rem; margin-bottom: 1rem; background: #ecfdf5; border: 1px solid #10b981; color: #065f46; border-radius: 10px; font-weight: 500;">
+  <i class="fa-solid fa-circle-check" style="margin-right: 0.5rem;"></i> Thank you! Your message has been sent successfully.
+</div>
+<div data-fs-error style="display: none; padding: 1rem; margin-bottom: 1rem; background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; border-radius: 10px; font-weight: 500;">
+  <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i> Oops! Something went wrong. Please try again.
+</div>
+
+<!-- OPTIMIZED CONTACT FORM -->
+<form class="contact-form ui-card" id="contact-form">
+  <div class="form-group">
+    <label for="name">Your Name</label>
+    <input type="text" id="name" name="name" placeholder="John Doe" required data-fs-field />
+    <span data-fs-error="name" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.2rem;"></span>
+  </div>
+  
+  <div class="form-group">
+    <label for="email">Email Address</label>
+    <input type="email" id="email" name="email" placeholder="john@example.com" required data-fs-field />
+    <span data-fs-error="email" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.2rem;"></span>
+  </div>
+  
+  <div class="form-group">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="4" placeholder="Detail your project or query..." required data-fs-field></textarea>
+    <span data-fs-error="message" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.2rem;"></span>
+  </div>
+  
+  <button type="submit" class="btn btn-brand" data-fs-submit-btn>
+    <i class="fa-solid fa-paper-plane"></i> Send Message
+  </button>
+</form>
       </div>
     </div>
   </section>
