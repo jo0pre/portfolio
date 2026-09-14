@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 
+  <!-- Async Load hCaptcha API -->
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
   <style>
     /* ==========================================================================
        LIGHT THEME DESIGN SYSTEM & VARIABLES
@@ -899,7 +902,7 @@
           <div class="timeline-content ui-card">
             <h3>Senior Webmaster & WordPress Developer</h3>
             <div class="company">HIVE GROUP INC.</div>
-            <div class="date"><i class="fa-regular fa-calendar" style="margin-right: 0.4rem;"></i> Apr 2020 – July 2026 | Mandaue, Philippines</div>
+            <div class="date"><i class="fa-regular fa-calendar" style="margin-right: 0.4rem;"></i> Apr 2020 – Present | Mandaue, Philippines</div>
             <p>Directing technical operations for corporate websites ensuring 99.9% uptime. Translating mock-ups into responsive WordPress builds (Elementor/Divi), full-stack administration (DNS, hosting, security), and driving technical SEO performance.</p>
           </div>
         </div>
@@ -962,53 +965,50 @@
           </p>
           <div style="color: var(--text-muted);">
             <p><i class="fa-solid fa-location-dot" style="color: var(--accent-primary); margin-right: 0.5rem;"></i> Lapu-lapu City, Cebu, Philippines</p>
-            <p style="margin-top: 0.5rem;">
-  <i class="fa-solid fa-paper-plane" style="color: var(--accent-secondary); margin-right: 0.5rem;"></i> 
-  <span>Use the contact form to send a direct message.</span>
-</p>
+            <p style="margin-top: 0.5rem; display: flex; align-items: center;">
+              <i class="fa-solid fa-envelope" style="color: var(--accent-secondary); margin-right: 0.5rem;"></i> 
+              <span id="contact-email-container">
+                <button onclick="revealEmail()" class="btn btn-ghost" style="padding: 0.2rem 0.8rem; font-size: 0.85rem;">
+                  <i class="fa-solid fa-eye"></i> Show Email Address
+                </button>
+              </span>
+            </p>
           </div>
         </div>
 
-        <!-- FORMSPREE CAPTCHA SUBMISSION -->
- <!-- FORMSPREE AJAX SCRIPT (Place in head or right above form) -->
-<script>
-  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-  formspree('initForm', { formElement: '#contact-form', formId: 'maewlkpb' });
-</script>
-<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+        <!-- FORMSPREE AJAX + HCAPTCHA FORM -->
+        <div class="contact-form ui-card">
+          <div id="fs-success" style="display: none; padding: 1rem; margin-bottom: 1rem; background: #ecfdf5; border: 1px solid #10b981; color: #065f46; border-radius: 10px; font-weight: 500;">
+            <i class="fa-solid fa-circle-check" style="margin-right: 0.5rem;"></i> Thank you! Your message has been sent successfully.
+          </div>
+          <div id="fs-error" style="display: none; padding: 1rem; margin-bottom: 1rem; background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; border-radius: 10px; font-weight: 500;">
+            <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i> <span id="fs-error-text">Please complete the captcha check before submitting.</span>
+          </div>
 
-<!-- SUCCESS & ERROR FEEDBACK NOTIFICATIONS -->
-<div data-fs-success style="display: none; padding: 1rem; margin-bottom: 1rem; background: #ecfdf5; border: 1px solid #10b981; color: #065f46; border-radius: 10px; font-weight: 500;">
-  <i class="fa-solid fa-circle-check" style="margin-right: 0.5rem;"></i> Thank you! Your message has been sent successfully.
-</div>
-<div data-fs-error style="display: none; padding: 1rem; margin-bottom: 1rem; background: #fef2f2; border: 1px solid #ef4444; color: #991b1b; border-radius: 10px; font-weight: 500;">
-  <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i> Oops! Something went wrong. Please try again.
-</div>
-
-<!-- OPTIMIZED CONTACT FORM -->
-<form class="contact-form ui-card" id="contact-form">
-  <div class="form-group">
-    <label for="name">Your Name</label>
-    <input type="text" id="name" name="name" placeholder="John Doe" required data-fs-field />
-    <span data-fs-error="name" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.2rem;"></span>
-  </div>
-  
-  <div class="form-group">
-    <label for="email">Email Address</label>
-    <input type="email" id="email" name="email" placeholder="john@example.com" required data-fs-field />
-    <span data-fs-error="email" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.2rem;"></span>
-  </div>
-  
-  <div class="form-group">
-    <label for="message">Message</label>
-    <textarea id="message" name="message" rows="4" placeholder="Detail your project or query..." required data-fs-field></textarea>
-    <span data-fs-error="message" style="color: #ef4444; font-size: 0.8rem; margin-top: 0.2rem;"></span>
-  </div>
-  
-  <button type="submit" class="btn btn-brand" data-fs-submit-btn>
-    <i class="fa-solid fa-paper-plane"></i> Send Message
-  </button>
-</form>
+          <form id="contact-form" onsubmit="handleFormSubmit(event)">
+            <div class="form-group" style="margin-bottom: 1.2rem;">
+              <label for="name">Your Name</label>
+              <input type="text" id="name" name="name" placeholder="John Doe" required />
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 1.2rem;">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="john@example.com" required />
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 1.2rem;">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="4" placeholder="Detail your project or query..." required></textarea>
+            </div>
+            
+            <!-- Custom hCaptcha Widget -->
+            <div class="h-captcha" data-sitekey="0ceae7e4-ca9c-4310-87b6-8f90cb4a43e2" style="margin-bottom: 1.2rem;"></div>
+            
+            <button type="submit" id="submit-btn" class="btn btn-brand">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -1022,17 +1022,17 @@
 
   <!-- JAVASCRIPT -->
   <script>
-    // Obfuscated Email Loader
-    document.addEventListener("DOMContentLoaded", function() {
+    // 1. Protected Email Reveal Handler
+    function revealEmail() {
       const u = "joopre";
       const d = "gmail.com";
-      const emailElem = document.getElementById("contact-email");
-      if (emailElem) {
-        emailElem.innerHTML = `<a href="mailto:${u}@${d}">${u}@${d}</a>`;
+      const container = document.getElementById("contact-email-container");
+      if (container) {
+        container.innerHTML = `<a href="mailto:${u}@${d}" style="color: var(--accent-primary); font-weight: 600;">${u}@${d}</a>`;
       }
-    });
+    }
 
-    // 1. Mobile Centered Burger Menu
+    // 2. Mobile Centered Burger Menu
     const burgerBtn = document.getElementById('burger-btn');
     const burgerIcon = document.getElementById('burger-icon');
     const navMenu = document.getElementById('nav-menu');
@@ -1054,7 +1054,7 @@
       burgerIcon.classList.add('fa-bars');
     }
 
-    // 2. PORTFOLIO DATA SET (UPDATED WITH AI GENERATED DESIGNS)
+    // 3. PORTFOLIO DATA SET (INCLUDES AI GENERATED DESIGNS)
     const portfolioItems = [
       // AI GENERATED DESIGNS (6)
       { id: 1, category: 'aidesign', title: 'KBK SPORTS Women’s Running Shorts', desc: 'AI-generated activewear concept rendering (1149x1369).', type: 'image', fileName: 'KBK SPORTS Women’s Running Shorts.png', width: 1149, height: 1369 },
@@ -1150,7 +1150,7 @@
 
     renderPortfolio();
 
-    // 3. Tab Filtering Handler
+    // 4. Tab Filtering Handler
     function filterShowcase(category, evt) {
       const buttons = document.querySelectorAll('.tab-btn');
       buttons.forEach(btn => btn.classList.remove('active'));
@@ -1170,7 +1170,7 @@
       });
     }
 
-    // 4. Pop-up Modal Handler
+    // 5. Pop-up Modal Handler
     const modalOverlay = document.getElementById('item-modal');
     const modalContainer = document.getElementById('modal-preview-container');
     const modalTitle = document.getElementById('modal-title');
@@ -1230,6 +1230,67 @@
     modalOverlay.addEventListener('click', (e) => {
       if (e.target === modalOverlay) closeModal();
     });
+
+    // 6. FORMSPREE AJAX + HCAPTCHA SUBMISSION HANDLER
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+      
+      const form = event.target;
+      const submitBtn = document.getElementById('submit-btn');
+      const successMsg = document.getElementById('fs-success');
+      const errorMsg = document.getElementById('fs-error');
+      const errorText = document.getElementById('fs-error-text');
+
+      // Reset alert displays
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+
+      // Verify hCaptcha response token exists
+      const hcaptchaResponseElem = form.querySelector('[name="h-captcha-response"]');
+      const hcaptchaResponse = hcaptchaResponseElem ? hcaptchaResponseElem.value : "";
+      
+      if (!hcaptchaResponse) {
+        errorText.innerText = "Please complete the CAPTCHA check before submitting.";
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Disable button while sending
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('https://formspree.io/f/maewlkpb', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          successMsg.style.display = 'block';
+          form.reset();
+          if (window.hcaptcha) window.hcaptcha.reset();
+        } else {
+          const data = await response.json();
+          if (data && data.errors) {
+            errorText.innerText = data.errors.map(err => err.message).join(", ");
+          } else {
+            errorText.innerText = "Oops! There was a problem submitting your message.";
+          }
+          errorMsg.style.display = 'block';
+        }
+      } catch (err) {
+        errorText.innerText = "Network error. Please try again later.";
+        errorMsg.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Message';
+      }
+    }
   </script>
 </body>
 </html>
